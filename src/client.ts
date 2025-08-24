@@ -6,6 +6,7 @@ const api = axios.create({
     Accept: "application/json",
   },
   withCredentials: true,
+  withXSRFToken:true,
 });
 
 export type LoginPayload = {
@@ -18,13 +19,13 @@ export const authClient = {
   logout: () => api.post("/logout"),
 };
 
-type Document = {
+export type Document = {
   id: number;
   name: string;
   expires_at: string;
 };
 export const documentsClient = {
-  getDocuments: () => api.get<{ data: Document[] }>("/documents"),
+  getDocuments: () => api.get<{ data: Document[] }>("api/documents"),
   getDocument: (id: number) => api.get<{ data: Document }>(`/documents/${id}`),
   archiveDocument: (id: number) => api.post(`/documents/${id}/archive`),
   createDocument: (id: number) => api.post(`/documents/${id}`),
