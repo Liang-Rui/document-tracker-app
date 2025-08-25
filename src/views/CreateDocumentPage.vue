@@ -3,7 +3,11 @@
     <form @submit.prevent="onUpload" class="space-y-4">
       <div>
         <label>Document</label>
-        <input type="file" required @change="onChooseFile"/>
+        <div class="w-full h-32 flex justify-center items-center border-dashed border-2 cursor-pointer" @click="onChooseFile" @drop.prevent="onDropFile" @dragover.prevent>
+          <div v-if="!document">Drag files here</div>
+          <div v-else>{{ document?.name }}</div>
+          <input ref="fileInput" name="document" type="file" required class="sr-only" @input="onFileChange"/>
+        </div>
       </div>
 
       <div>
@@ -28,14 +32,30 @@
 import { ref } from 'vue';
 import { documentsClient } from '../client';
 const document = ref<File | null>(null)
+const fileInput = ref<HTMLInputElement>()
 const expireDate = ref()
 const errorMessage = ref<string>()
 const loading = ref<boolean>(false)
 
-const onChooseFile = (e: Event) => {
-  errorMessage.value = ''
+const onFileChange = (e: Event): void => {
   const input = e.target as HTMLInputElement
   document.value = input.files?.[0] ?? null
+}
+
+const onChooseFile = (): void => {
+  errorMessage.value = ''
+  fileInput.value?.click()
+}
+
+const onDropFile = (e: DragEvent): void => {
+  const droppedFile = e.dataTransfer?.files?.[0] ?? null
+
+  if (!droppedFile || !fileInput.value) return
+
+  const dt = new DataTransfer()
+  dt.items.add(droppedFile)
+  fileInput.value.files = dt.files
+  document.value = droppedFile
 }
 
 const onUpload = async () => {
@@ -73,5 +93,4 @@ const onUpload = async () => {
 label {
   @apply block mb-1 font-bold text-gray-500;
 }
-
 </style>
