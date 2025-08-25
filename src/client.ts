@@ -26,7 +26,7 @@ export type Document = {
 };
 export const documentsClient = {
   getDocuments: () => api.get<{ data: Document[] }>("api/documents"),
-  getDocument: (id: number) => api.get<{ data: Document }>(`/documents/${id}`),
-  archiveDocument: (id: number) => api.post(`/documents/${id}/archive`),
+  getDocument: (id: number) => api.get<{ data: Document }>(`api/documents/${id}`),
+  archiveDocument: (id: number) => api.post(`api/documents/${id}/archive`),
   createDocument: (data: FormData) => api.post(`api/documents`, data),
 };

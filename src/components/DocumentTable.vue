@@ -24,9 +24,13 @@
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
-                    <tr v-for="(doc, index) in documents" :key="index">
-                        <td>{{ doc.name }}</td>
-                        <td class="text-right">{{ dateToLocalString(doc.expires_at) }}</td>
+                    <tr v-for="(doc, index) in documents" :key="index" class="hover:bg-gray-100 cursor-pointer" @click="onRetrieveDocument(doc)">
+                        <td>
+                            {{ doc.name }}
+                        </td>
+                        <td class="text-right">
+                            {{ dateToLocalString(doc.expires_at) }}
+                        </td>
                     </tr>
                     </tbody>
                 </table>
@@ -38,13 +42,18 @@
 
 <script setup lang="ts">
 import { dateToLocalString } from '../utils/dateToLocalString';
-import type { Document } from '../client';
+import { type Document } from '../client';
+import { router } from '../router';
 
 defineProps<{
     title: string
     description?: string
     documents: Document[]
 }>()
+
+const onRetrieveDocument = async (document: Document) => {
+    router.push(`documents/${document.id}`)
+}
 </script>
 <style scoped>
 td,th {
