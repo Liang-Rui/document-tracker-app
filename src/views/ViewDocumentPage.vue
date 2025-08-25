@@ -3,7 +3,8 @@
     <h1>Document Id: {{ document?.id }}</h1>
     <h1>Document Name: {{ document?.name }}</h1>
     <h1>Document Expired At: {{ document?.expires_at && dateToLocalString(document.expires_at) }}</h1>
-    <button class="w-64 flex justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-gray-400" @click="onArchiveDocument">Archive Document</button>
+    <h1 v-if="document?.archived_at">Document Archived At: {{ dateToLocalString(document.archived_at) }}</h1>
+    <button v-if="document && !document.archived_at" class="w-64 flex justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 disabled:bg-gray-400" @click="onArchiveDocument">Archive Document</button>
     <div v-if="errorMessage" class="font-bold space-y-3 text-xl text-orange-600">
       {{ errorMessage }}
     </div>
