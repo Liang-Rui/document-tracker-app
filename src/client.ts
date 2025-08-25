@@ -23,6 +23,7 @@ export type Document = {
   id: number;
   name: string;
   expires_at: string;
+  archived_at?: string;
 };
 export const documentsClient = {
   getDocuments: () => api.get<{ data: Document[] }>("api/documents"),

@@ -21,6 +21,7 @@
                     <tr>
                         <th>Name</th>
                         <th class="text-right">Expire Date</th>
+                        <th class="text-right" v-if="archivedTable">Archived Date</th>
                     </tr>
                     </thead>
                     <tbody class="divide-y divide-gray-200">
@@ -30,6 +31,9 @@
                         </td>
                         <td class="text-right">
                             {{ dateToLocalString(doc.expires_at) }}
+                        </td>
+                        <td class="text-right" v-if="archivedTable">
+                            {{ doc.archived_at && dateToLocalString(doc.archived_at) }}
                         </td>
                     </tr>
                     </tbody>
@@ -49,6 +53,7 @@ defineProps<{
     title: string
     description?: string
     documents: Document[]
+    archivedTable?: boolean
 }>()
 
 const onRetrieveDocument = async (document: Document) => {
@@ -57,6 +62,6 @@ const onRetrieveDocument = async (document: Document) => {
 </script>
 <style scoped>
 td,th {
-  @apply py-2 w-1/2;
+  @apply py-2 w-1/3;
 }
 </style>

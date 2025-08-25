@@ -18,6 +18,12 @@
             title="Expired Documents"
             :documents="expiredDocs"
           />
+
+          <DocumentTable
+            title="Archived Documents"
+            :archived-table="true"
+            :documents="archivedDocs"
+          />
         </div>
       </div>
     </div>
@@ -37,21 +43,23 @@ const documents = ref<Document[]>([])
 const expiringDocs = computed((): Document[] => {
   return documents.value.filter(d =>  {
     const timeDiff = new Date(d.expires_at).getTime() - new Date().getTime()
-    return timeDiff > 0 && timeDiff <= EXPIRE_SOON_TIME
+    return !d.archived_at && timeDiff > 0 && timeDiff <= EXPIRE_SOON_TIME
   })
 })
 
 const expiredDocs = computed((): Document[] => {
   return documents.value.filter(d =>  {
     const timeDiff = new Date(d.expires_at).getTime() - new Date().getTime()
-    return timeDiff < 0 
+    return !d.archived_at && timeDiff < 0 
   })
 })
+
+const archivedDocs = computed((): Document[] => documents.value.filter(d => d.archived_at !== null))
 
 const listedDocs = computed((): Document[] => {
   return documents.value.filter(d =>  {
     const timeDiff = new Date(d.expires_at).getTime() - new Date().getTime()
-    return timeDiff > EXPIRE_SOON_TIME 
+    return !d.archived_at && timeDiff > EXPIRE_SOON_TIME 
   })
 })
 
